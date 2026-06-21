@@ -1,10 +1,11 @@
 from parser import parse_log
+from pathlib import Path
+
+LOG_FILE = Path(__file__).parent.parent / "logs" / "sample.log"
 
 
 def main():
-    # Gets the sammple log file and parses it
-    log_file_path = "../logs/sample.log"
-    log_entries = parse_log(log_file_path)
+    log_entries = parse_log(LOG_FILE)
 
     # Displays each entry in the file
     for entry in log_entries:
