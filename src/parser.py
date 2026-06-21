@@ -1,4 +1,6 @@
 from dataclasses import dataclass
+from datetime import datetime
+from ipaddress import ip_address
 
 
 @dataclass
@@ -15,14 +17,25 @@ def parse_log(filepath):
     with open(filepath) as file:
         # Reads each line of a file
         for line in file:
+            line = line.strip()
+
+            if not line:
+                continue
+
             # Splits each part of the line
-            parts = line.strip().split()
+            parts = line.split()
 
-            # Stores the parts in a new logEntry
-            entry = LogEntry(
-                timestamp=parts[0], event=parts[1], user=parts[2], ip=parts[3]
-            )
+            if len(parts) != 4:
+                continue
 
-            entries.append(entry)
+            try:
+                # Checks that the datetime and ip address are in the correct format
+                datetime.fromisoformat(parts[0])
+                ip_address(parts[3])
+            except ValueError:
+                continue
+
+            # Adds each entry to entries
+            entries.append(LogEntry(*parts))
 
     return entries
