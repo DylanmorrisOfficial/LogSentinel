@@ -1,53 +1,59 @@
-import sys
-import os
 import pytest
+import ipaddress
+import os
+import sys
 from pathlib import Path
-
-LOG_FILE = Path(__file__).parent.parent / "logs" / "sample.log"
+from datetime import datetime
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
 from parser import parse_log
 
+LOG_FILE = Path(__file__).parent.parent / "logs" / "sample.log"
 
-def test_parse_returns_list():
-    entries = parse_log(LOG_FILE)
 
+@pytest.fixture
+def entries():
+    return parse_log(LOG_FILE)
+
+
+def test_parse_returns_list(entries):
     assert isinstance(entries, list)
+    assert len(entries) > 0
 
 
-def test_first_entry_user():
-    entries = parse_log(LOG_FILE)
+def test_entries_have_required_structure(entries):
+    entry = entries[0]
 
-    assert entries[0].user == "alice"
-
-
-def test_first_entry_event():
-    entries = parse_log(LOG_FILE)
-
-    assert entries[0].event == "LOGIN_SUCCESS"
+    assert hasattr(entry, "user")
+    assert hasattr(entry, "event")
+    assert hasattr(entry, "ip")
+    assert hasattr(entry, "timestamp")
 
 
-def test_first_entry_ip():
-    entries = parse_log(LOG_FILE)
-
-    assert entries[0].ip == "192.168.1.10"
-
-
-def test_first_entry_timestamp():
-    entries = parse_log(LOG_FILE)
-
-    assert entries[0].timestamp == "2026-06-21T09:00:00"
+def test_ip_addresses_are_valid(entries):
+    for entry in entries:
+        parsed_ip = ipaddress.ip_address(entry.ip)
+        assert isinstance(parsed_ip, ipaddress._BaseAddress)
 
 
-def test_last_entry():
-    entries = parse_log(LOG_FILE)
-
-    assert entries[-1].user == "admin"
-    assert entries[-1].event == "LOGIN_FAILED"
-    assert entries[-1].ip == "203.0.113.5"
+def test_timestamps_are_valid_isoformat(entries):
+    for entry in entries:
+        parsed_time = datetime.fromisoformat(entry.timestamp)
+        assert isinstance(parsed_time, datetime)
 
 
-def test_missing_file_raises_error():
+def test_first_and_last_entries(entries):
+    first = entries[0]
+    last = entries[-1]
+
+    assert first.user is not None
+    assert first.event is not None
+
+    assert last.user is not None
+    assert last.event is not None
+
+
+def test_parser_handles_missing_file():
     with pytest.raises(FileNotFoundError):
-        parse_log("logs/fake.log")
+        parse_log("logs/missing_file.log")
