@@ -1,14 +1,6 @@
-from dataclasses import dataclass
 from datetime import datetime
 from ipaddress import ip_address
-
-
-@dataclass
-class LogEntry:
-    timestamp: str
-    event: str
-    user: str
-    ip: str
+from models import LogEntry
 
 
 def parse_log(filepath):
