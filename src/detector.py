@@ -37,7 +37,9 @@ def detect_bruteforce(entries):
         else:
             continue
 
-        window = times[4] - times[0]
+        # Checks if 5 consecutive failed logins occurred within a 5-minute window
+        for i in range(len(times) - 4):
+            window = times[i + 4] - times[i]
 
         # Checks if the window is greater than 5 minutes
         if window <= timedelta(minutes=MAX_MINUTES):
