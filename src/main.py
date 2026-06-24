@@ -9,8 +9,10 @@ def main():
     log_entries = parse_log(LOG_FILE)
 
     alerts = detect_password_spray(log_entries)
+    brute = detect_brute_force(log_entries)
 
     print(alerts)
+    print(brute)
 
 
 # Main entry point for the Application
