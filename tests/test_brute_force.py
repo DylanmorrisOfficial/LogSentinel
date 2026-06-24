@@ -1,7 +1,5 @@
-import pytest
 import os
 import sys
-from pathlib import Path
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
@@ -108,7 +106,7 @@ def test_ignore_successful_logins():
 
     for i in range(10):
         entries.append(
-            LogEntry(f"2026-06-17T10:0i{i}:00", "LOGIN_SUCCESS", "bob", "192.168.1.15")
+            LogEntry(f"2026-06-17T10:0{i}:00", "LOGIN_SUCCESS", "bob", "192.168.1.15")
         )
 
     alerts = detect_brute_force(entries)
