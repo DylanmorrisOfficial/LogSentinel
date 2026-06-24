@@ -5,17 +5,8 @@ from pathlib import Path
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
-from parser import parse_log
-from detector import detect_bruteforce
+from detector import detect_brute_force
 from models import LogEntry
-
-LOG_FILE = Path(__file__).parent.parent / "logs" / "sample.log"
-
-
-@pytest.fixture
-def alerts():
-    log_entries = parse_log(LOG_FILE)
-    return detect_bruteforce(log_entries)
 
 
 def test_medium_severity():
@@ -26,7 +17,7 @@ def test_medium_severity():
             LogEntry(f"2026-06-17T10:0{i}:00", "LOGIN_FAILED", "bob", "192.168.1.15")
         )
 
-    alerts = detect_bruteforce(entries)
+    alerts = detect_brute_force(entries)
 
     assert len(alerts) == 1
     assert alerts[0].severity == "Medium"
@@ -41,7 +32,7 @@ def test_high_severity():
             LogEntry(f"2026-06-17T10:0{i}:00", "LOGIN_FAILED", "bob", "192.168.1.15")
         )
 
-    alerts = detect_bruteforce(entries)
+    alerts = detect_brute_force(entries)
 
     assert len(alerts) == 1
     assert alerts[0].severity == "High"
@@ -56,7 +47,7 @@ def test_critical_severity():
             LogEntry(f"2026-06-17T10:{i:02}:00", "LOGIN_FAILED", "bob", "192.168.1.15")
         )
 
-    alerts = detect_bruteforce(entries)
+    alerts = detect_brute_force(entries)
 
     assert len(alerts) == 1
     assert alerts[0].severity == "Critical"
@@ -71,7 +62,7 @@ def test_below_threshold():
             LogEntry(f"2026-06-17T10:0{i}:00", "LOGIN_FAILED", "bob", "192.168.1.15")
         )
 
-    alerts = detect_bruteforce(entries)
+    alerts = detect_brute_force(entries)
 
     assert len(alerts) == 0
 
@@ -87,7 +78,7 @@ def test_outside_time_window():
             )
         )
 
-    alerts = detect_bruteforce(entries)
+    alerts = detect_brute_force(entries)
 
     assert len(alerts) == 0
 
@@ -106,7 +97,7 @@ def test_multiple_attackers():
             LogEntry(f"2026-06-17T11:0{i}:00", "LOGIN_FAILED", "admin", "192.168.1.20")
         )
 
-    alerts = detect_bruteforce(entries)
+    alerts = detect_brute_force(entries)
 
     assert len(alerts) == 2
 
@@ -120,6 +111,6 @@ def test_ignore_successful_logins():
             LogEntry(f"2026-06-17T10:0i{i}:00", "LOGIN_SUCCESS", "bob", "192.168.1.15")
         )
 
-    alerts = detect_bruteforce(entries)
+    alerts = detect_brute_force(entries)
 
     assert len(alerts) == 0
