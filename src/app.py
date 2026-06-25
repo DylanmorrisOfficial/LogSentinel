@@ -1,4 +1,6 @@
 from flask import Flask, render_template, request
+from parser import parse_log
+from detector import detect_brute_force, detect_password_spray
 
 # Creates the flask application
 app = Flask(__name__, template_folder="../templates")
@@ -23,8 +25,21 @@ def upload():
     if file.filename == "":
         return "No file selected", 400
 
-    file.save("logs/uploaded.log")
-    return "File received"
+    file_path = "logs/uploaded.log"
+    file.save(file_path)
+
+    # Parses the uploaded file
+    entries = parse_log(file_path)
+
+    alerts = []
+
+    # Checks for different attacks and stores them to alerts
+    alerts.extend(detect_brute_force(entries))
+    alerts.extend(detect_password_spray(entries))
+
+    return (
+        f"File received. Parsed {len(entries)} entries and found {len(alerts)} alerts."
+    )
 
 
 # Main entry point for the application

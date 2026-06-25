@@ -8,11 +8,11 @@ LOG_FILE = Path(__file__).parent.parent / "logs" / "sample.log"
 def main():
     log_entries = parse_log(LOG_FILE)
 
-    alerts = detect_password_spray(log_entries)
-    brute = detect_brute_force(log_entries)
+    password_spray = detect_password_spray(log_entries)
+    brute_force = detect_brute_force(log_entries)
 
-    print(alerts)
-    print(brute)
+    print(password_spray)
+    print(brute_force)
 
 
 # Main entry point for the Application
