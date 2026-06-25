@@ -28,7 +28,7 @@ def upload():
     file_path = "logs/uploaded.log"
     file.save(file_path)
 
-    # Parses the uploaded file
+    # Gets eeach entry in the uploaded file
     entries = parse_log(file_path)
 
     alerts = []
@@ -37,8 +37,10 @@ def upload():
     alerts.extend(detect_brute_force(entries))
     alerts.extend(detect_password_spray(entries))
 
-    return (
-        f"File received. Parsed {len(entries)} entries and found {len(alerts)} alerts."
+    return render_template(
+        "dashboard.html",
+        entries=entries,
+        alerts=alerts,
     )
 
 

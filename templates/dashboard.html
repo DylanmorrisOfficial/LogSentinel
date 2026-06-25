@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LogSentinel - Dashboard</title>
+    
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+    <h1>LogSentinel Dashboard</h1>
+
+    <h2>Total Events</h2>
+
+    <p>{{ entries|length }}</p>
+
+    <h2>Total Alerts</h2>
+
+    <p>{{ alerts|length }}</p>
+
+    <table border="1">
+
+        <tr>
+            <th>Attack</th>
+            <th>Severity</th>
+            <th>User</th>
+            <th>IP</th>
+        </tr>
+    
+        {% for alert in alerts %}
+    
+        <tr>
+            <td>{{ alert.alert_type }}</td>
+            <td>{{ alert.severity }}</td>
+            <td>{{ alert.user }}</td>
+            <td>{{ alert.ip }}</td>
+        </tr>
+    
+        {% endfor %}
+    
+    </table>
+
+</body>
+</html>
