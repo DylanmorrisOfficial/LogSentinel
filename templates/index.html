@@ -45,16 +45,16 @@
                     <i data-lucide="upload-cloud"></i>
                     <span>Choose a log file</span>
                 </label>
+
+                <p id="file-name" class="file-name">No file selected</p>
                     
                 <button type="submit">Upload</button>
             </form>
 
         </div>
     </div>
-            
-    <script>
-        lucide.createIcons();
-    </script>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 
 </body>
 </html>
