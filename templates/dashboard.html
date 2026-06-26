@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
 <html lang="en">
+    
 <head>
     <meta charset="UTF-8">
 
@@ -8,41 +9,52 @@
 
     <title>LogSentinel - Dashboard</title>
     
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body>
+    <div class="container">
+        <h1>LogSentinel Dashboard</h1>
 
-    <h1>LogSentinel Dashboard</h1>
+        <div class="stats">
 
-    <h2>Total Events</h2>
+            <div class="card">
+                <h3>Total Events</h3>
+                <p>{{ entries|length }}</p>
+            </div>
+        
+            <div class="card">
+                <h3>Total Alerts</h3>
+                <p>{{ alerts|length }}</p>
+            </div>
+        
+        </div>
 
-    <p>{{ entries|length }}</p>
+        <table border="1">
 
-    <h2>Total Alerts</h2>
-
-    <p>{{ alerts|length }}</p>
-
-    <table border="1">
-
-        <tr>
-            <th>Attack</th>
-            <th>Severity</th>
-            <th>User</th>
-            <th>IP</th>
-        </tr>
-    
-        {% for alert in alerts %}
-    
-        <tr>
-            <td>{{ alert.alert_type }}</td>
-            <td>{{ alert.severity }}</td>
-            <td>{{ alert.user }}</td>
-            <td>{{ alert.ip }}</td>
-        </tr>
-    
-        {% endfor %}
-    
-    </table>
-
+            <tr>
+                <th>Attack</th>
+                <th>Severity</th>
+                <th>User</th>
+                <th>IP</th>
+            </tr>
+        
+            {% for alert in alerts %}
+        
+            <tr>
+                <td>{{ alert.alert_type }}</td>
+                <td>
+                    <span class="badge {{ alert.severity|lower }}">
+                        {{ alert.severity }}
+                    </span>
+                </td>
+                <td>{{ alert.user }}</td>
+                <td>{{ alert.ip }}</td>
+            </tr>
+        
+            {% endfor %}
+        
+        </table>
+    </div>
 </body>
 </html>

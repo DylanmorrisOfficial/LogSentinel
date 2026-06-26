@@ -3,7 +3,7 @@ from parser import parse_log
 from detector import detect_brute_force, detect_password_spray
 
 # Creates the flask application
-app = Flask(__name__, template_folder="../templates")
+app = Flask(__name__, template_folder="../templates", static_folder="../static")
 
 
 # Route for the homepage

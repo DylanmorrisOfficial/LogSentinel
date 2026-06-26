@@ -8,23 +8,53 @@
 
     <title>LogSentinel</title>
 
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
+
 <body>
 
-    <h1>LogSentinel</h1>
-
-    <p>Upload a log file</p>
-
-    <form method="POST" action="/upload" enctype="multipart/form-data">
-
-        <input type="file" name="logfile">
+    <div class="container">
     
-        <button type="submit">
-            Upload
-        </button>
+        <header>
     
-    </form>
+            <h1>LogSentinel</h1>
+    
+            <p>Upload a log file to analyse for security threats.</p>
+    
+        </header>
+    
+        <div class="upload-card">
+    
+            <div class="card-header">
+    
+                <h2>
+                    <i data-lucide="upload-cloud"></i>
+                    Upload a log file
+                </h2>
+    
+                <p>Choose a log file from your device to get started.</p>
+    
+            </div>     
+            
+            <form method="POST" action="/upload" enctype="multipart/form-data">
+                <input type="file" name="logfile" id="logfile" hidden>
+                    
+                <label for="logfile" class="upload-box">
+                    <i data-lucide="upload-cloud"></i>
+                    <span>Choose a log file</span>
+                </label>
+                    
+                <button type="submit">Upload</button>
+            </form>
+
+        </div>
+    </div>
+            
+    <script>
+        lucide.createIcons();
+    </script>
 
 </body>
 </html>
