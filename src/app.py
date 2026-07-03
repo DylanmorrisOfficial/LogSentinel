@@ -1,6 +1,10 @@
 from flask import Flask, render_template, request
 from parser import parse_log
-from detector import detect_brute_force, detect_password_spray
+from detector import (
+    detect_brute_force,
+    detect_password_spray,
+    detect_success_after_failure,
+)
 
 # Creates the flask application
 app = Flask(__name__, template_folder="../templates", static_folder="../static")
@@ -36,6 +40,7 @@ def upload():
     # Checks for different attacks and stores them to alerts
     alerts.extend(detect_brute_force(entries))
     alerts.extend(detect_password_spray(entries))
+    alerts.extend(detect_success_after_failure(entries))
 
     return render_template(
         "dashboard.html",
