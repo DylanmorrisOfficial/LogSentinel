@@ -89,6 +89,16 @@ button:hover {
     transform: translateY(-2px);
 }
 
+/* Links */
+a {
+    color:#1d4ed8;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
 
 .stats {
     display: flex;

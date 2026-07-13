@@ -5,6 +5,9 @@ from detector import (
     detect_password_spray,
     detect_success_after_failure,
 )
+from database import create_tables, save_logs, save_alerts
+
+create_tables()
 
 # Creates the flask application
 app = Flask(__name__, template_folder="../templates", static_folder="../static")
@@ -41,6 +44,9 @@ def upload():
     alerts.extend(detect_brute_force(entries))
     alerts.extend(detect_password_spray(entries))
     alerts.extend(detect_success_after_failure(entries))
+
+    save_logs(entries)
+    save_alerts(alerts)
 
     return render_template(
         "dashboard.html",
