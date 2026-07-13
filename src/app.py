@@ -1,11 +1,13 @@
 from flask import Flask, render_template, request
 from parser import parse_log
+
 from detector import (
     detect_brute_force,
     detect_password_spray,
     detect_success_after_failure,
 )
-from database import create_tables, save_logs, save_alerts
+
+from database import create_tables, save_logs, save_alerts, get_all_logs, get_all_alerts
 
 create_tables()
 
@@ -51,6 +53,20 @@ def upload():
     return render_template(
         "dashboard.html",
         entries=entries,
+        alerts=alerts,
+    )
+
+
+# Route for viewing the history of logs and alerts
+@app.route("/history")
+def history():
+    # Gets all logs and alerts from the database
+    logs = get_all_logs()
+    alerts = get_all_alerts()
+
+    return render_template(
+        "history.html",
+        logs=logs,
         alerts=alerts,
     )
 

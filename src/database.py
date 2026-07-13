@@ -71,3 +71,39 @@ def save_alerts(alerts):
 
     connection.commit()
     connection.close()
+
+
+def get_all_logs():
+    # Returns all log entries from the database
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        SELECT id, timestamp, event, user, ip
+        FROM logs
+        ORDER BY timestamp DESC
+    """)
+
+    rows = cursor.fetchall()
+
+    connection.close()
+
+    return rows
+
+
+def get_all_alerts():
+    # Returns all alerts from the database
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        SELECT id, attack_type, severity, user, ip
+        FROM alerts
+        ORDER BY id DESC
+    """)
+
+    rows = cursor.fetchall()
+
+    connection.close()
+
+    return rows
